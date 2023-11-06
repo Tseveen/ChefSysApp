@@ -5,7 +5,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Бүртгүүлэх'),
+        title: const Text('Бүртгүүлэх'),
         backgroundColor: Colors.lightBlue,
       ),
       body: Center(
@@ -13,7 +13,7 @@ class SignUp extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Овог',  // Add a comma here
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -22,9 +22,9 @@ class SignUp extends StatelessWidget {
 
             Container(
               width: 300,
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 16),
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Овог',
                 ),

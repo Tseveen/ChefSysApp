@@ -18,7 +18,18 @@ class SignUp extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-            )
+            ),
+
+            Container(
+              width: 300,
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 16),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Овог',
+                ),
+              ),
+            ),
           ],
         ),
       ),

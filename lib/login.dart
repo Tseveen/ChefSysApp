@@ -1,18 +1,16 @@
-import 'package:chefsysproject/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:chefsysproject/signup.dart';
+import 'package:chefsysproject/home.dart';
 
-void main() => runApp(MaterialApp(
-      home: Home(),
-    ));
-
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[800],
       appBar: AppBar(
-        title: Text('ChefSys Devs'),
+        title: const Text('ChefSys Devs'),
         centerTitle: true,
         backgroundColor: Colors.lightBlue,
       ),
@@ -21,73 +19,108 @@ class Home extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: Image(
                 image: AssetImage('assets/logo.png'),
                 height: 150,
               ),
             ),
-            Text(
+            const Text(
               'ChefSys',
               style: TextStyle(
+                fontFamily: 'Indie',
                 fontSize: 50.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 1), // Add vertical spacing
+            const SizedBox(height: 10), // Add vertical spacing
 
             Container(
               width: 300,
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               child: TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Нэвтрэх нэр',
-                ),
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Нэвтрэх нэр',
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                    )),
               ),
             ),
 
             Container(
               width: 300,
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               child: TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Нууц үг',
-                ),
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Нууц үг',
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                    )),
               ),
             ),
-
+            const SizedBox(
+              height: 20,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Add your login logic here
-                    },
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => Home()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                  ),
+                  child: const Expanded(
                     child: Text('Нэвтрэх'),
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    ),
                   ),
                 ),
-                SizedBox(width: 10), // Add some spacing between the buttons
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignUp()));
-                    },
+                const SizedBox(
+                    width: 40), // Add some spacing between the buttons
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => SignUp()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                  ),
+                  child: const Expanded(
                     child: Text('Бүртгүүлэх'),
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    ),
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    child: ElevatedButton(
+                        onPressed: () {}, child: Icon(Icons.flag)),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Монгол',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),

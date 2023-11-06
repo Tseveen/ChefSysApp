@@ -1,13 +1,11 @@
-// signup_screen.dart
-
 import 'package:flutter/material.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text('Бүртгүүлэх'),
         backgroundColor: Colors.lightBlue,
       ),
       body: Center(
@@ -15,7 +13,12 @@ class SignUpScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Add your sign-up form fields and logic here
+            Text(
+              'Овог',  // Add a comma here
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )
           ],
         ),
       ),

@@ -1,6 +1,9 @@
 import 'package:chefsysproject/pages/signup.dart';
 import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 
 import 'home.dart';
 
@@ -16,6 +19,7 @@ class _LoginState extends State<Login> {
   final TextEditingController _usernameTextController = TextEditingController();
 
   final TextEditingController _passwordTextController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class _LoginState extends State<Login> {
               style: TextStyle(
                 color: Colors.white54,
                 fontFamily: 'Indie',
-                fontSize: 50.0,
+                fontSize: 80.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -138,7 +142,7 @@ class _LoginState extends State<Login> {
           GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SignUp()));
+                  MaterialPageRoute(builder: (context) => SignUp()));
             },
             child: const Text(
               " Sign Up",

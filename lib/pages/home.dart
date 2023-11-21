@@ -11,9 +11,9 @@ class Home extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blueAccent,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(50),
               ),
             ),
@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisSpacing: 30,
                   crossAxisSpacing: 10,
@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AjilchidPage()),
+                        MaterialPageRoute(builder: (context) => const AjilchidPage()),
                       );
                     },
                     child: Container(
@@ -63,7 +63,7 @@ class Home extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -80,7 +80,7 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       
@@ -88,7 +88,7 @@ class Home extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -105,14 +105,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -129,14 +129,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -153,14 +153,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -177,14 +177,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -201,14 +201,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -225,14 +225,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
@@ -249,14 +249,14 @@ class Home extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                          MaterialPageRoute(builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(

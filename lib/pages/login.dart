@@ -1,9 +1,6 @@
 import 'package:chefsysproject/pages/signup.dart';
 import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-
 
 import 'home.dart';
 
@@ -16,10 +13,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  final TextEditingController _usernameTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
 
   final TextEditingController _passwordTextController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +61,7 @@ class _LoginState extends State<Login> {
             //         )),
             //   ),
             // ),
-            reusableTextField("Нэвтрэх нэр", Icons.person_2_outlined, false, _usernameTextController),
+            reusableTextField("Цахим хаяг", Icons.person_2_outlined, false, _emailTextController),
             const SizedBox(
               height: 10.0,
             ),
@@ -89,7 +85,7 @@ class _LoginState extends State<Login> {
             button(context, true, () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
             }),
-            signUp(),
+            burtguuleh(),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   children: [
@@ -131,21 +127,21 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-  Padding signUp() {
+  Padding burtguuleh() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Don't have account?",
+          const Text("Шинээр бүртгүүлэх үү?",
               style: TextStyle(color: Colors.white54)),
           GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignUp()));
+                  MaterialPageRoute(builder: (context) => const SignUp()));
             },
             child: const Text(
-              " Sign Up",
+              " Бүртгүүлэх",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           )

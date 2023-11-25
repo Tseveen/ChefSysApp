@@ -35,7 +35,6 @@ class _SignUpState extends State<SignUp> {
               20, MediaQuery.of(context).size.height * 0.2, 20, 0),
           child: Column(
             children: [
-              
               reusableTextField('Цахим хаяг', Icons.email_outlined, false,
                   _emailTextController),
               const SizedBox(
@@ -46,17 +45,19 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(
                 height: 20,
               ),
-              button(context, true, () {
+              button(context, ButtonType.SignUp, () {
                 FirebaseAuth.instance
                     .createUserWithEmailAndPassword(
                         email: _emailTextController.text,
                         password: _passwordTextController.text)
                     .then((value) {
-                    print("Шинэ хаяг үүслээ");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Шинэ хаяг үүслээ")));
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Login()));
                 }).onError((error, stackTrace) {
-                  print("Амжилтгүй ${error.toString()}");
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text("Амжилтгүй")));
                 });
               }),
             ],

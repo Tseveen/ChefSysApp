@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/user_info.dart';
 import 'package:flutter/material.dart';
 import 'ajilchid.dart'; // Import the AjilchidPage
 
@@ -32,9 +33,17 @@ class Home extends StatelessWidget {
                           .textTheme
                           .titleMedium
                           ?.copyWith(color: Colors.white54)),
-                  trailing: const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/logo.png'),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const UserInfoScreen()),
+                      );
+                    },
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage('assets/logo.png'),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10)
@@ -55,7 +64,7 @@ class Home extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const AjilchidPage()),
+                        MaterialPageRoute(builder: (context) => const StaffListScreen()),
                       );
                     },
                     child: Container(

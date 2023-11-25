@@ -1,7 +1,7 @@
 import 'package:chefsysproject/pages/signup.dart';
 import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -12,10 +12,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final TextEditingController _emailTextController = TextEditingController();
 
   final TextEditingController _passwordTextController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -49,76 +49,31 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(height: 10), // Add vertical spacing
 
-            // Container(
-            //   width: 300,
-            //   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-            //   child: TextFormField(
-            //     decoration: const InputDecoration(
-            //         border: OutlineInputBorder(),
-            //         hintText: 'Нэвтрэх нэр',
-            //         hintStyle: TextStyle(
-            //           color: Colors.white,
-            //         )),
-            //   ),
-            // ),
-            reusableTextField("Цахим хаяг", Icons.person_2_outlined, false, _emailTextController),
+            reusableTextField("Цахим хаяг", Icons.person_2_outlined, false,
+                _emailTextController),
             const SizedBox(
               height: 10.0,
             ),
-            reusableTextField("Нууц үг", Icons.lock_outlined, true, _passwordTextController),
-            // Container(
-            //   width: 300,
-            //   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-            //   child: TextFormField(
-            //     decoration: const InputDecoration(
-            //         border: OutlineInputBorder(),
-            //         hintText: 'Нууц үг',
-            //         hintStyle: TextStyle(
-            //           color: Colors.white,
-            //         )),
-            //   ),
-            // ),
+            reusableTextField(
+
+                "Нууц үг", Icons.lock_outlined, true, _passwordTextController),
+
             const SizedBox(
               height: 20,
             ),
 
-            button(context, true, () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+            button(context, ButtonType.Login, () {
+              FirebaseAuth.instance
+                  .signInWithEmailAndPassword(
+                      email: _emailTextController.text,
+                      password: _passwordTextController.text)
+                  .then((value) => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home())));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Амжилттай нэвтэрлээ")));
             }),
             burtguuleh(),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     ElevatedButton(
-            //       onPressed: () {
-            //         Navigator.of(context)
-            //             .push(MaterialPageRoute(builder: (context) => const Home()));
-            //       },
-            //       style: ElevatedButton.styleFrom(
-            //         padding: const EdgeInsets.symmetric(
-            //             horizontal: 10, vertical: 10),
-            //       ),
-            //       child: const Expanded(
-            //         child: Text('Нэвтрэх'),
-            //       ),
-            //     ),
-            //     const SizedBox(
-            //         width: 40), // Add some spacing between the buttons
-            //     ElevatedButton(
-            //       onPressed: () {
-            //         Navigator.of(context).push(
-            //             MaterialPageRoute(builder: (context) => SignUp()));
-            //       },
-            //       style: ElevatedButton.styleFrom(
-            //         padding: const EdgeInsets.symmetric(
-            //             horizontal: 10, vertical: 10),
-            //       ),
-            //       child: const Expanded(
-            //         child: Text('Бүртгүүлэх'),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+
             const SizedBox(
               height: 100,
             ),
@@ -127,6 +82,7 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
   Padding burtguuleh() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -142,7 +98,8 @@ class _LoginState extends State<Login> {
             },
             child: const Text(
               " Бүртгүүлэх",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           )
         ],

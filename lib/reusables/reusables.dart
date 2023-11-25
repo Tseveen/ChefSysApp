@@ -33,7 +33,7 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType, Tex
     :TextInputType.text,
   );
 }
-Container button(BuildContext context, bool isLogin, Function onTap){
+Container button(BuildContext context, ButtonType buttonType, Function onTap) {
   return Container(
     width: MediaQuery.of(context).size.width,
     height: 50,
@@ -41,22 +41,21 @@ Container button(BuildContext context, bool isLogin, Function onTap){
       borderRadius: BorderRadius.circular(30.0),
     ),
     child: ElevatedButton(
-      onPressed: (){
+      onPressed: () {
         onTap();
       },
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if(states.contains(MaterialState.pressed)){
-            return Colors.black38;
-          }
-          return Colors.white;
-        }),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ))
-      ),
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.black38;
+            }
+            return Colors.white;
+          }),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ))),
       child: Text(
-        isLogin ?'Нэвтрэх' :'Бүртгүүлэх',
+        buttonType == ButtonType.SignUp ? 'Бүртгүүлэх' : 'Нэвтрэх',
         style: const TextStyle(
           color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20,
         ),
@@ -64,3 +63,5 @@ Container button(BuildContext context, bool isLogin, Function onTap){
     ),
   );
 }
+
+enum ButtonType { SignUp, Login }

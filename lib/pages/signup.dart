@@ -46,6 +46,11 @@ class _SignUpState extends State<SignUp> {
                 height: 20,
               ),
               button(context, ButtonType.SignUp, () {
+                showDialog(context: context,
+                 builder: (context){
+                  return Center(child: CircularProgressIndicator());
+                 }
+                 );
                 FirebaseAuth.instance
                     .createUserWithEmailAndPassword(
                         email: _emailTextController.text,

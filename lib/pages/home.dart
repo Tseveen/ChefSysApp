@@ -2,7 +2,6 @@ import 'package:chefsysproject/pages/user_info.dart';
 import 'package:flutter/material.dart';
 import 'ajilchid.dart'; // Import the AjilchidPage
 
-
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -37,7 +36,8 @@ class Home extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const UserInfoScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => UserInfoScreen()),
                       );
                     },
                     child: CircleAvatar(
@@ -64,7 +64,8 @@ class Home extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const StaffListScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const StaffListScreen()),
                       );
                     },
                     child: Container(
@@ -88,11 +89,12 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
-                      
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.blueAccent,
@@ -113,8 +115,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -137,8 +141,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -161,8 +167,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -185,8 +193,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -209,8 +219,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -233,8 +245,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -257,8 +271,10 @@ class Home extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const Home()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Home()));
                     },
                     child: Container(
                       decoration: BoxDecoration(

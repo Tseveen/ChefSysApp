@@ -13,71 +13,85 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final TextEditingController _emailTextController = TextEditingController();
-
   final TextEditingController _passwordTextController = TextEditingController();
   
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          color: Colors.blueAccent,
-        ),
-        padding: EdgeInsets.fromLTRB(
-            20, MediaQuery.of(context).size.height * 0.2, 20, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              child: Image(
-                image: AssetImage('assets/logo.png'),
-                height: 150,
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            color: Colors.blueAccent,
+          ),
+          padding: EdgeInsets.fromLTRB(
+              20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                child: Image(
+                  image: AssetImage('assets/logo.png'),
+                  height: 150,
+                ),
               ),
-            ),
-            const Text(
-              'ChefSys',
-              style: TextStyle(
-                color: Colors.white54,
-                fontFamily: 'Indie',
-                fontSize: 80.0,
-                fontWeight: FontWeight.bold,
+              const Text(
+                'ChefSys',
+                style: TextStyle(
+                  color: Colors.white54,
+                  fontFamily: 'Indie',
+                  fontSize: 80.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 10), // Add vertical spacing
-
-            reusableTextField("Цахим хаяг", Icons.person_2_outlined, false,
-                _emailTextController),
-            const SizedBox(
-              height: 10.0,
-            ),
-            reusableTextField(
-
-                "Нууц үг", Icons.lock_outlined, true, _passwordTextController),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            button(context, ButtonType.Login, () {
-              FirebaseAuth.instance
-                  .signInWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
-                  .then((value) => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home())));
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Амжилттай нэвтэрлээ")));
-            }),
-            burtguuleh(),
-
-            const SizedBox(
-              height: 100,
-            ),
-          ],
+              const SizedBox(height: 10), // Add vertical spacing
+        
+              reusableTextField("Цахим хаяг", Icons.person_2_outlined, false,
+                  _emailTextController),
+              const SizedBox(
+                height: 10.0,
+              ),
+              reusableTextField(
+        
+                  "Нууц үг", Icons.lock_outlined, true, _passwordTextController),
+        
+              const SizedBox(
+                height: 20,
+              ),
+        
+              button(context, ButtonType.Login, () {
+                //loading circle
+                showDialog(context: context,
+                 builder: (context){
+                  return Center(child: CircularProgressIndicator());
+                 }
+                 );
+                FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text)
+                    .then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Амжилттай нэвтэрлээ")));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Home()));
+                  }).onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text("Бүртгэлгүй хаяг байна")));
+                  }).onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text("Нэвтрэх нэр нууц үг буруу байна.")));
+                  });
+                }),
+              burtguuleh(),
+        
+              const SizedBox(
+                height: 100,
+              ),
+            ],
+          ),
         ),
       ),
     );

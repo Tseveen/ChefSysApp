@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/forgetpassword.dart';
 import 'package:chefsysproject/pages/signup.dart';
 import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,46 +48,69 @@ class _LoginState extends State<Login> {
                 ),
               ),
               const SizedBox(height: 10), // Add vertical spacing
-        
+
               reusableTextField("Цахим хаяг", Icons.person_2_outlined, false,
                   _emailTextController),
               const SizedBox(
                 height: 10.0,
               ),
-              reusableTextField(
-        
-                  "Нууц үг", Icons.lock_outlined, true, _passwordTextController),
-        
+              reusableTextField("Нууц үг", Icons.lock_outlined, true,
+                  _passwordTextController),
+
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-        
+              //nuuts ug martsan
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ForgetPasswordPage();
+                        }));
+                      },
+                      child: Text(
+                        " Нууц үгээ мартсан уу ?",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
               button(context, ButtonType.Login, () {
                 //loading circle
-                showDialog(context: context,
-                 builder: (context){
-                  return Center(child: CircularProgressIndicator());
-                 }
-                 );
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Center(child: CircularProgressIndicator());
+                    });
                 FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                         email: _emailTextController.text,
                         password: _passwordTextController.text)
                     .then((value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Амжилттай нэвтэрлээ")));
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Home()));
-                  }).onError((error, stackTrace) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text("Бүртгэлгүй хаяг байна")));
-                  }).onError((error, stackTrace) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text("Нэвтрэх нэр нууц үг буруу байна.")));
-                  });
-                }),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Амжилттай нэвтэрлээ")));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home()));
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Бүртгэлгүй хаяг байна")));
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Нэвтрэх нэр нууц үг буруу байна.")));
+                });
+              }),
               burtguuleh(),
-        
+
               const SizedBox(
                 height: 100,
               ),

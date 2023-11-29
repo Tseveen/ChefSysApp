@@ -19,7 +19,8 @@ class _StaffListScreenState extends State<StaffListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Staff List'),
+        title: const Text('Ажилчид'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,25 +30,25 @@ class _StaffListScreenState extends State<StaffListScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Add Staff:'),
+                Text('Ажилтан нэмэх:'),
                 TextField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: InputDecoration(labelText: 'Нэр'),
                 ),
                 TextField(
                   controller: _roleController,
-                  decoration: InputDecoration(labelText: 'Role'),
+                  decoration: InputDecoration(labelText: 'Үүрэг'),
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: _addStaff,
-                  child: Text('Add +'),
+                  child: Text('Нэмэх +'),
                 ),
               ],
             ),
           ),
           Divider(),
-          Text('Staff List:'),
+          Text('Ажилтны жагсаалт:'),
           Expanded(
             child: ListView.builder(
               itemCount: _staffList.length,
@@ -60,12 +61,12 @@ class _StaffListScreenState extends State<StaffListScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: () => _editStaff(index),
-                        child: Text('Edit'),
+                        child: Text('Өөрчлөх'),
                       ),
                       SizedBox(width: 8.0),
                       ElevatedButton(
                         onPressed: () => _removeStaff(index),
-                        child: Text('Remove'),
+                        child: Text('Хасах'),
                       ),
                     ],
                   ),
@@ -100,18 +101,18 @@ class _StaffListScreenState extends State<StaffListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit Staff'),
+          title: Text('Мэдээлэл өөрчлөх'),
           content: Column(
             children: [
               TextField(
                 controller:
                     TextEditingController(text: _staffList[index]['name']),
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'Нэр'),
               ),
               TextField(
                 controller:
                     TextEditingController(text: _staffList[index]['role']),
-                decoration: InputDecoration(labelText: 'Role'),
+                decoration: InputDecoration(labelText: 'Үүрэг'),
               ),
             ],
           ),
@@ -120,7 +121,7 @@ class _StaffListScreenState extends State<StaffListScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text('Цуцлах'),
             ),
             TextButton(
               onPressed: () {
@@ -133,7 +134,7 @@ class _StaffListScreenState extends State<StaffListScreen> {
 
                 _uploadStaffList();
               },
-              child: Text('Save'),
+              child: Text('Хадгалах'),
             ),
           ],
         );

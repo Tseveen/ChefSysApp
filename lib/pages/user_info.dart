@@ -1,25 +1,9 @@
 import 'package:chefsysproject/pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User Info Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: UserInfoScreen(),
-    );
-  }
-}
 
 class UserInfoScreen extends StatelessWidget {
   @override
@@ -29,14 +13,6 @@ class UserInfoScreen extends StatelessWidget {
         title: Text('Хэрэглэгчийн мэдээлэл'),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              // TODO: Implement edit logic here
-              // For simplicity, we'll just print a message for now.
-              print('Edit button pressed');
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () {
               _showLogoutConfirmationDialog(context);
@@ -44,41 +20,93 @@ class UserInfoScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+      //image edit
+      body: Container(
+        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+        child: ListView(
           children: [
-            CircleAvatar(
-              radius: 50,
-              // TODO: Add user profile picture here
-              backgroundColor: Colors.blue,
-              // You can use an image here: backgroundImage: AssetImage('path/to/image.png'),
+            SizedBox(
+              height: 15,
             ),
-            SizedBox(height: 16),
-            Text(
-              'Username',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            Center(
+              child: Stack(
+                children: [
+                  Container(
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 4,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          color: Colors.blueAccent.withOpacity(0.1),
+                          offset: const Offset(0, 10),
+                        )
+                      ],
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("assets/logo.png"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: Border.all(
+                          width: 4,
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        color: Colors.blueAccent,
+                      ),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add_a_photo),
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              'user@example.com',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+            //edit address etc..
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [                   
+                    const SizedBox(height: 20),
+                    itemProfile('Овог', 'Амгалан', CupertinoIcons.person),
+                    const SizedBox(height: 10),
+                    itemProfile('Нэр', 'Цэвээнравдан', CupertinoIcons.person),
+                    const SizedBox(height: 10),
+                    itemProfile('Email', 'tseveenbna@gmail.com', CupertinoIcons.mail),
+                    const SizedBox(height: 10),
+                    itemProfile('Утас', '80745008', CupertinoIcons.phone),
+                    const SizedBox(height: 10),
+                    itemProfile('Хаяг', '3-4 хороолол', CupertinoIcons.home),
+                    const SizedBox(height: 10),
+                    itemProfile('Ажлын үүрэг', 'Тогооч', CupertinoIcons.bag),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16),
-            // TODO: Add more user information as needed
           ],
         ),
       ),
     );
   }
-
+//logout ask
   void _showLogoutConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -106,6 +134,35 @@ class UserInfoScreen extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget itemProfile(String title, String subtitle, IconData iconData) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 5),
+            color: Colors.blueAccent.withOpacity(.2),
+            spreadRadius: 2,
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(subtitle),
+        leading: Icon(iconData),
+        trailing: IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            print('Edit button pressed');
+          },
+        ),
+        tileColor: Colors.white,
+      ),
     );
   }
 }

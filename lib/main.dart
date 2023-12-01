@@ -1,4 +1,5 @@
 import 'package:chefsysproject/pages/login.dart';
+import 'package:chefsysproject/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -10,19 +11,15 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'RMS',
+      theme: lightMode,
+      darkTheme: darkMode,
       home: const Login(),
     );
   }
 }
-
-
-

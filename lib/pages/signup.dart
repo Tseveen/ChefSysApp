@@ -103,68 +103,68 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
         title: const Text('Бүртгүүлэх'),
       ),
       body: SingleChildScrollView(
         child: Container(
+          padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+          color: Theme.of(context).colorScheme.background,
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            color: Colors.blueAccent,
-          ),
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               20,
-              MediaQuery.of(context).size.height * 0.2,
+              MediaQuery.of(context).size.height * 0.10,
               20,
               0,
             ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  reusableTextField('Овог', Icons.email_outlined, false,
-                      _firstNameController),
+                  reusableTextField(context, 'Овог', Icons.email_outlined,
+                      false, _firstNameController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Нэр', Icons.email_outlined, false,
+                      _lastNameController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Нас', Icons.email_outlined, false,
+                      _ageController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Утасны дугаар',
+                      Icons.email_outlined, false, _numberController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Хаяг', Icons.email_outlined,
+                      false, _addressController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Ажлын үүрэг',
+                      Icons.email_outlined, false, _rollController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Цахим хаяг', Icons.email_outlined,
+                      false, _emailTextController),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField(context, 'Нууц үг', Icons.password_outlined,
+                      true, _passwordTextController),
                   const SizedBox(
                     height: 20,
                   ),
                   reusableTextField(
-                      'Нэр', Icons.email_outlined, false, _lastNameController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField(
-                      'Нас', Icons.email_outlined, false, _ageController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField('Утасны дугаар', Icons.email_outlined,
-                      false, _numberController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField(
-                      'Хаяг', Icons.email_outlined, false, _addressController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField('Ажлын үүрэг', Icons.email_outlined, false,
-                      _rollController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField('Цахим хаяг', Icons.email_outlined, false,
-                      _emailTextController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField('Нууц үг', Icons.password_outlined, true,
-                      _passwordTextController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  reusableTextField(
+                    context,
                     'Нууц үгээ дахин хийнэ үү?',
                     Icons.password_outlined,
                     true,

@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 
-
-TextField reusableTextField(String text, IconData icon, bool isPasswordType, TextEditingController controller){
+TextField reusableTextField(BuildContext context, String text, IconData icon,
+    bool isPasswordType, TextEditingController controller) {
   return TextField(
     controller: controller,
     obscureText: isPasswordType,
     enableSuggestions: !isPasswordType,
     autocorrect: !isPasswordType,
-    cursorColor: Colors.white,
-    style: const TextStyle(
-      color: Colors.white,
+    cursorColor: Theme.of(context).colorScheme.tertiary,
+    style: TextStyle(
+      color: Theme.of(context).colorScheme.tertiary,
     ),
     decoration: InputDecoration(
       prefixIcon: Icon(
         icon,
-        color: Colors.white38,
+        color: Theme.of(context).colorScheme.tertiary,
       ),
       labelText: text,
-      labelStyle: const TextStyle(
-        color: Colors.white,
+      labelStyle: TextStyle(
+        color: Theme.of(context).colorScheme.tertiary,
       ),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: Colors.white54,
+      fillColor: Theme.of(context).colorScheme.primary,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30.0),
         borderSide: const BorderSide(width: 0, style: BorderStyle.none),
       ),
     ),
-    keyboardType: isPasswordType
-    ? TextInputType.visiblePassword
-    :TextInputType.text,
+    keyboardType:
+        isPasswordType ? TextInputType.visiblePassword : TextInputType.text,
   );
 }
+
 Container button(BuildContext context, ButtonType buttonType, Function onTap) {
   return Container(
     width: MediaQuery.of(context).size.width,
@@ -47,17 +47,19 @@ Container button(BuildContext context, ButtonType buttonType, Function onTap) {
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.black38;
+              return Theme.of(context).colorScheme.secondary;
             }
-            return Colors.white;
+            return Theme.of(context).colorScheme.primary;
           }),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ))),
       child: Text(
         buttonType == ButtonType.SignUp ? 'Бүртгүүлэх' : 'Нэвтрэх',
-        style: const TextStyle(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.tertiary,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
         ),
       ),
     ),

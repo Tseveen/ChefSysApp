@@ -10,13 +10,34 @@ class UserInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text('Хэрэглэгчийн мэдээлэл'),
+        titleTextStyle: TextStyle(
+          color: Theme.of(context).colorScheme.tertiary,
+          fontSize: 20,
+        ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              _showLogoutConfirmationDialog(context);
-            },
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.sunny),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                      Theme.of(context).colorScheme.primary),
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(Icons.exit_to_app),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                      Theme.of(context).colorScheme.primary),
+                ),
+                onPressed: () {
+                  _showLogoutConfirmationDialog(context);
+                },
+              ),
+            ],
           ),
         ],
       ),
@@ -38,7 +59,7 @@ class UserInfoScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 4,
-                        color: Theme.of(context).scaffoldBackgroundColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -65,14 +86,14 @@ class UserInfoScreen extends StatelessWidget {
                         shape: BoxShape.rectangle,
                         border: Border.all(
                           width: 4,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                        color: Colors.blueAccent,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       child: IconButton(
                         onPressed: () {},
                         icon: const Icon(Icons.add_a_photo),
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
                   ),
@@ -84,19 +105,25 @@ class UserInfoScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  children: [                   
+                  children: [
                     const SizedBox(height: 20),
-                    itemProfile('Овог', 'Амгалан', CupertinoIcons.person),
+                    itemProfile(
+                        context, 'Овог', 'Амгалан', CupertinoIcons.person),
                     const SizedBox(height: 10),
-                    itemProfile('Нэр', 'Цэвээнравдан', CupertinoIcons.person),
+                    itemProfile(
+                        context, 'Нэр', 'Цэвээнравдан', CupertinoIcons.person),
                     const SizedBox(height: 10),
-                    itemProfile('Email', 'tseveenbna@gmail.com', CupertinoIcons.mail),
+                    itemProfile(context, 'Email', 'tseveenbna@gmail.com',
+                        CupertinoIcons.mail),
                     const SizedBox(height: 10),
-                    itemProfile('Утас', '80745008', CupertinoIcons.phone),
+                    itemProfile(
+                        context, 'Утас', '80745008', CupertinoIcons.phone),
                     const SizedBox(height: 10),
-                    itemProfile('Хаяг', '3-4 хороолол', CupertinoIcons.home),
+                    itemProfile(
+                        context, 'Хаяг', '3-4 хороолол', CupertinoIcons.home),
                     const SizedBox(height: 10),
-                    itemProfile('Ажлын үүрэг', 'Тогооч', CupertinoIcons.bag),
+                    itemProfile(
+                        context, 'Ажлын үүрэг', 'Тогооч', CupertinoIcons.bag),
                   ],
                 ),
               ),
@@ -106,6 +133,7 @@ class UserInfoScreen extends StatelessWidget {
       ),
     );
   }
+
 //logout ask
   void _showLogoutConfirmationDialog(BuildContext context) {
     showDialog(
@@ -119,7 +147,12 @@ class UserInfoScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Үгүй'),
+              child: Text(
+                'Үгүй',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -129,7 +162,12 @@ class UserInfoScreen extends StatelessWidget {
                 );
                 print('Хэрэглэгч гарлаа');
               },
-              child: Text('Гарах'),
+              child: Text(
+                'Тийм',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
             ),
           ],
         );
@@ -137,11 +175,12 @@ class UserInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget itemProfile(String title, String subtitle, IconData iconData) {
+  Widget itemProfile(
+      BuildContext context, title, String subtitle, IconData iconData) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             offset: Offset(0, 5),
@@ -156,12 +195,14 @@ class UserInfoScreen extends StatelessWidget {
         subtitle: Text(subtitle),
         leading: Icon(iconData),
         trailing: IconButton(
-          icon: Icon(Icons.edit),
+          icon: Icon(
+            Icons.edit,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           onPressed: () {
             print('Edit button pressed');
           },
         ),
-        tileColor: Colors.white,
       ),
     );
   }

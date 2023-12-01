@@ -12,11 +12,12 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Colors.blueAccent,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(50),
               ),
@@ -30,12 +31,11 @@ class Home extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall
-                          ?.copyWith(color: Colors.white)),
+                          ?.copyWith(
+                              color: Theme.of(context).colorScheme.tertiary)),
                   subtitle: Text('Ажлын зэрэг',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: Colors.white54)),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.tertiary)),
                   trailing: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -143,7 +143,7 @@ class Home extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(UIParameters.cardBorderRadius),
-          color: Colors.blueAccent,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         child: Ink(
           decoration: BoxDecoration(
@@ -164,7 +164,9 @@ class Home extends StatelessWidget {
               ),
               Text(
                 label,
-                style: TextStyle(color: Colors.white, fontSize: 15),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 15),
               ),
             ],
           ),

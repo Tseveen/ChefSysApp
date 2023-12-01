@@ -23,8 +23,8 @@ class _LoginState extends State<Login> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            color: Colors.blueAccent,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
           ),
           padding: EdgeInsets.fromLTRB(
               20, MediaQuery.of(context).size.height * 0.2, 20, 0),
@@ -38,10 +38,10 @@ class _LoginState extends State<Login> {
                   height: 150,
                 ),
               ),
-              const Text(
+              Text(
                 'ChefSys',
                 style: TextStyle(
-                  color: Colors.white54,
+                  color: Theme.of(context).colorScheme.tertiary,
                   fontFamily: 'Indie',
                   fontSize: 80.0,
                   fontWeight: FontWeight.bold,
@@ -49,12 +49,12 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 10), // Add vertical spacing
 
-              reusableTextField("Цахим хаяг", Icons.person_2_outlined, false,
-                  _emailTextController),
+              reusableTextField(context, "Цахим хаяг", Icons.person_2_outlined,
+                  false, _emailTextController),
               const SizedBox(
                 height: 10.0,
               ),
-              reusableTextField("Нууц үг", Icons.lock_outlined, true,
+              reusableTextField(context, "Нууц үг", Icons.lock_outlined, true,
                   _passwordTextController),
 
               const SizedBox(
@@ -67,15 +67,17 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
                           return ForgetPasswordPage();
                         }));
                       },
                       child: Text(
                         " Нууц үгээ мартсан уу ?",
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -127,17 +129,16 @@ class _LoginState extends State<Login> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Шинээр бүртгүүлэх үү?",
-              style: TextStyle(color: Colors.white54)),
+          Text("Шинээр бүртгүүлэх үү?",
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary)),
           GestureDetector(
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const SignUp()));
             },
-            child: const Text(
+            child: Text(
               " Бүртгүүлэх",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
             ),
           )
         ],

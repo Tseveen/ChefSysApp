@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/login.dart';
 import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailTextController.text.trim());
-          showDialog(
+      showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -48,22 +49,16 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         title: Text(
           'Нууц үгээ мартсан',
           style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.tertiary),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blueAccent, Colors.blue],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        color: Theme.of(context).colorScheme.background,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -72,11 +67,12 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               'Цахим хаягаа хийнэ үү?',
               style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.tertiary,
               ),
             ),
             SizedBox(height: 20.0),
             reusableTextField(
+              context,
               "Цахим хаяг",
               Icons.email,
               false,
@@ -84,18 +80,21 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: passwordReset,
+              onPressed: () {
+                passwordReset;
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Login()));
+              },
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.blueAccent,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
               ),
               child: Text(
                 'Нууц үгээ сэргээх',
                 style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
             ),
           ],

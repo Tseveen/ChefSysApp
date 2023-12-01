@@ -2,6 +2,10 @@ import 'package:chefsysproject/pages/user_info.dart';
 import 'package:flutter/material.dart';
 import 'ajilchid.dart'; // Import the AjilchidPage
 
+class UIParameters {
+  static const double cardBorderRadius = 30.0;
+}
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -60,246 +64,111 @@ class Home extends StatelessWidget {
                   crossAxisSpacing: 10,
                 ),
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const StaffListScreen()),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/employees.png"),
-                          ),
-                          Text(
-                            "Ажилчид",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Ажилчид',
+                    'assets/employees.png',
+                    StaffListScreen(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/menu.png"),
-                          ),
-                          Text(
-                            "Цэс",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Цэс',
+                    'assets/menu.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/users.png"),
-                          ),
-                          Text(
-                            "Хэрэглэгчид",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Хэрэглэгчид',
+                    'assets/users.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/fridge.png"),
-                          ),
-                          Text(
-                            "Агуулах",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Агуулах',
+                    'assets/fridge.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/time.png"),
-                          ),
-                          Text(
-                            "Цагийн хуваарь",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Цагийн хуваарь',
+                    'assets/time.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/van.png"),
-                          ),
-                          Text(
-                            "Нийлүүлэгч",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Нийлүүлэгч',
+                    'assets/van.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/calculator.png"),
-                          ),
-                          Text(
-                            "Төлбөр тооцоо",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Төлбөр тооцоо',
+                    'assets/calculator.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/restaurant.png"),
-                          ),
-                          Text(
-                            "Захиалга",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Захиалга',
+                    'assets/restaurant.png',
+                    Home(),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.blueAccent,
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage("assets/tax.png"),
-                          ),
-                          Text(
-                            "Урсгал зардал",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
+                  _buildInkWell(
+                    context,
+                    'Урсгал зардал',
+                    'assets/tax.png',
+                    Home(),
                   ),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInkWell(
+    BuildContext context,
+    String label,
+    String imagePath,
+    Widget destination,
+  ) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(UIParameters.cardBorderRadius),
+          color: Colors.blueAccent,
+        ),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage(imagePath),
+              ),
+              Text(
+                label,
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

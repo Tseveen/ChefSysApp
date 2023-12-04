@@ -1,13 +1,47 @@
+import 'package:chefsysproject/pages/staff.dart';
 import 'package:chefsysproject/pages/user_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'ajilchid.dart'; // Import the AjilchidPage
 
 class UIParameters {
   static const double cardBorderRadius = 30.0;
 }
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final user = FirebaseAuth.instance.currentUser!;
+  late String currentStaffLastName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCurrentStaffLastName();
+  }
+
+  void fetchCurrentStaffLastName() async {
+    try {
+      final staffSnapshot = await FirebaseFirestore.instance
+          .collection('staffs')
+          .where('email', isEqualTo: user.email)
+          .get();
+
+      if (staffSnapshot.docs.isNotEmpty) {
+        final currentStaffData = staffSnapshot.docs.first.data();
+        setState(() {
+          currentStaffLastName = currentStaffData['lastName'] ?? '';
+        });
+      }
+    } catch (e) {
+      print('Error fetching current staff data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +61,11 @@ class Home extends StatelessWidget {
                 const SizedBox(height: 65),
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                  title: Text('Сайн уу! Хэрэглэгч',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(
-                              color: Theme.of(context).colorScheme.tertiary)),
+                  title: Text(
+                    'Сайн уу! $currentStaffLastName',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.tertiary),
+                  ),
                   subtitle: Text('Ажлын зэрэг',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.tertiary)),
@@ -50,7 +83,7 @@ class Home extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10)
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -64,55 +97,55 @@ class Home extends StatelessWidget {
                   crossAxisSpacing: 10,
                 ),
                 children: [
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Ажилчид',
                     'assets/employees.png',
-                    StaffListScreen(),
+                    StaffsScreen(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Цэс',
                     'assets/menu.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Хэрэглэгчид',
                     'assets/users.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Агуулах',
                     'assets/fridge.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Цагийн хуваарь',
                     'assets/time.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Нийлүүлэгч',
                     'assets/van.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Төлбөр тооцоо',
                     'assets/calculator.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Захиалга',
                     'assets/restaurant.png',
                     Home(),
                   ),
-                  _buildInkWell(
+                  _buildAnimatedContainer(
                     context,
                     'Урсгал зардал',
                     'assets/tax.png',
@@ -127,7 +160,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildInkWell(
+  Widget _buildAnimatedContainer(
     BuildContext context,
     String label,
     String imagePath,
@@ -140,10 +173,15 @@ class Home extends StatelessWidget {
           MaterialPageRoute(builder: (context) => destination),
         );
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(UIParameters.cardBorderRadius),
           color: Theme.of(context).colorScheme.secondary,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.tertiary,
+            width: 2.0,
+          ),
         ),
         child: Ink(
           decoration: BoxDecoration(

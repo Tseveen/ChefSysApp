@@ -1,11 +1,28 @@
-import 'package:chefsysproject/pages/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:chefsysproject/pages/login.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class UserInfoScreen extends StatelessWidget {
+class UserInfoScreen extends StatefulWidget {
+  @override
+  _UserInfoScreenState createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  final CollectionReference<Map<String, dynamic>> dbRef =
+      FirebaseFirestore.instance.collection('staffs');
+  late User _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = _auth.currentUser!;
+    print('User UID: ${_user.uid}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +39,7 @@ class UserInfoScreen extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.sunny),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
+                  backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).colorScheme.primary),
                 ),
                 onPressed: () {},
@@ -30,7 +47,7 @@ class UserInfoScreen extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.exit_to_app),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
+                  backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).colorScheme.primary),
                 ),
                 onPressed: () {
@@ -43,98 +60,121 @@ class UserInfoScreen extends StatelessWidget {
       ),
 
       //image edit
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            Center(
-              child: Stack(
+      body: FutureBuilder<DocumentSnapshot>(
+        future: dbRef.doc(_user.uid).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (snapshot.data == null || !snapshot.hasData) {
+            return Center(
+              child: Text('No user data found.'),
+            );
+          } else {
+            Map<String, dynamic> userData =
+                (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+            print('User Data: $userData');
+
+            return Container(
+              padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+              child: ListView(
                 children: [
-                  Container(
-                    width: 180,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 4,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          spreadRadius: 2,
-                          blurRadius: 10,
-                          color: Colors.blueAccent.withOpacity(0.1),
-                          offset: const Offset(0, 10),
-                        )
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 180,
+                          height: 180,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 4,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.blueAccent.withOpacity(0.1),
+                                offset: const Offset(0, 10),
+                              )
+                            ],
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/logo.png"),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                width: 4,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.add_a_photo),
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                          ),
+                        ),
                       ],
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/logo.png"),
-                      ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          width: 4,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.add_a_photo),
-                        color: Theme.of(context).colorScheme.tertiary,
+                  //edit address etc..
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          itemProfile(
+                              context, 'Овог', userData['lastName'] ?? '', CupertinoIcons.person),
+                          const SizedBox(height: 10),
+                          itemProfile(
+                              context, 'Нэр', userData['firstName'] ?? '', CupertinoIcons.person),
+                          const SizedBox(height: 10),
+                          itemProfile(context, 'Email', _user.email ?? '', CupertinoIcons.mail),
+                          const SizedBox(height: 10),
+                          itemProfile(
+                              context, 'Утас', userData['phone'] ?? '', CupertinoIcons.phone),
+                          const SizedBox(height: 10),
+                          itemProfile(
+                              context, 'Хаяг', userData['address'] ?? '', CupertinoIcons.home),
+                          const SizedBox(height: 10),
+                          itemProfile(
+                              context, 'Ажлын үүрэг', userData['roll'] ?? '', CupertinoIcons.bag),
+                          const SizedBox(height: 10),
+                          itemProfile(context, 'Нас', userData['age'] ?? '', CupertinoIcons.percent),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            //edit address etc..
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    itemProfile(
-                        context, 'Овог', 'Амгалан', CupertinoIcons.person),
-                    const SizedBox(height: 10),
-                    itemProfile(
-                        context, 'Нэр', 'Цэвээнравдан', CupertinoIcons.person),
-                    const SizedBox(height: 10),
-                    itemProfile(context, 'Email', 'tseveenbna@gmail.com',
-                        CupertinoIcons.mail),
-                    const SizedBox(height: 10),
-                    itemProfile(
-                        context, 'Утас', '80745008', CupertinoIcons.phone),
-                    const SizedBox(height: 10),
-                    itemProfile(
-                        context, 'Хаяг', '3-4 хороолол', CupertinoIcons.home),
-                    const SizedBox(height: 10),
-                    itemProfile(
-                        context, 'Ажлын үүрэг', 'Тогооч', CupertinoIcons.bag),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
 
-//logout ask
   void _showLogoutConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,

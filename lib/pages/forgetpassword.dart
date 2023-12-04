@@ -1,10 +1,8 @@
-import 'package:chefsysproject/pages/login.dart';
-import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
-  const ForgetPasswordPage({Key? key}) : super(key: key);
+  const ForgetPasswordPage({super.key});
 
   @override
   State<ForgetPasswordPage> createState() => _ForgetPasswordPageState();
@@ -12,7 +10,6 @@ class ForgetPasswordPage extends StatefulWidget {
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   final _emailTextController = TextEditingController();
-
   @override
   void dispose() {
     _emailTextController.dispose();
@@ -23,11 +20,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailTextController.text.trim());
-      showDialog(
+          showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              content: Text('Нууц үг сэргээх холбоос Email-рүү илгээсэн.'),
+              content: Text('Нууц үг солих холбоос email уруу илгээгдлээ.'),
             );
           });
     } on FirebaseAuthException catch (e) {
@@ -45,67 +42,44 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Нууц үгээ мартсан',
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.tertiary),
-        ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: Container(
-        padding: EdgeInsets.all(16.0),
-        color: Theme.of(context).colorScheme.background,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 20.0),
-            Text(
-              'Цахим хаягаа хийнэ үү?',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Theme.of(context).colorScheme.tertiary,
+      appBar: AppBar(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Text(
+              'Email хаягаа хийнэ үү? нууц үг солих холбоос email хаяг уруу очих болно.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: _emailTextController,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                    borderRadius: BorderRadius.circular(12)),
+                hintText: 'Цахим хаяг',
+                fillColor: Colors.grey[200],
+                filled: true,
               ),
             ),
-            SizedBox(height: 20.0),
-            reusableTextField(
-              context,
-              "Цахим хаяг",
-              Icons.email,
-              false,
-              _emailTextController,
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                passwordReset;
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Login()));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-              ),
-              child: Text(
-                'Нууц үгээ сэргээх',
-                style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.tertiary),
-              ),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          MaterialButton(
+            onPressed: passwordReset,
+            child: Text('Нууц үг солих'),
+            color: Colors.blueAccent,
+          ),
+        ],
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: ForgetPasswordPage(),
-  ));
 }

@@ -102,7 +102,7 @@ class _LoginState extends State<Login> {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Амжилттай нэвтэрлээ")));
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home()));
+                      MaterialPageRoute(builder: (context) =>  Home()));
                 }).onError((error, stackTrace) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Бүртгэлгүй хаяг байна")));

@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/menupage.dart';
 import 'package:chefsysproject/pages/staff.dart';
 import 'package:chefsysproject/pages/user_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,14 +19,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
   late String currentStaffLastName = '';
+  late String currentStaffRole = ''; // Add this line
 
   @override
   void initState() {
     super.initState();
-    fetchCurrentStaffLastName();
+    fetchCurrentStaffData();
   }
 
-  void fetchCurrentStaffLastName() async {
+  void fetchCurrentStaffData() async {
     try {
       final staffSnapshot = await FirebaseFirestore.instance
           .collection('staffs')
@@ -36,6 +38,7 @@ class _HomeState extends State<Home> {
         final currentStaffData = staffSnapshot.docs.first.data();
         setState(() {
           currentStaffLastName = currentStaffData['lastName'] ?? '';
+          currentStaffRole = currentStaffData['roll'] ?? ''; // Fetch role
         });
       }
     } catch (e) {
@@ -64,11 +67,16 @@ class _HomeState extends State<Home> {
                   title: Text(
                     'Сайн уу! $currentStaffLastName',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.tertiary),
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
                   ),
-                  subtitle: Text('Ажлын зэрэг',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.tertiary)),
+                  subtitle: Text(
+                    'Ажлын зэрэг: $currentStaffRole',
+                    // Display the current staff's role
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                  ),
                   trailing: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -107,7 +115,7 @@ class _HomeState extends State<Home> {
                     context,
                     'Цэс',
                     'assets/menu.png',
-                    Home(),
+                    MenuPage(),
                   ),
                   _buildAnimatedContainer(
                     context,
@@ -203,8 +211,9 @@ class _HomeState extends State<Home> {
               Text(
                 label,
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 15),
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontSize: 15,
+                ),
               ),
             ],
           ),

@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StaffDetailsScreen extends StatefulWidget {
   final Map<String, dynamic>? staffData;
@@ -35,16 +35,16 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
   void _updateFirestoreData() async {
     final CollectionReference staffsCollection =
         FirebaseFirestore.instance.collection('staffs');
-    final userId = widget.staffData?['staffId']; // Change 'id' to 'userId'
+    final staffId = widget.staffData?['id'];
 
-    if (userId == null) {
-      print('Error: User ID is null or not found.');
+    if (staffId == null) {
+      print('Error: Staff ID is null or not found.');
       print('widget.staffData: ${widget.staffData}');
       return;
     }
 
     try {
-      await staffsCollection.doc(userId).update({
+      await staffsCollection.doc(staffId).update({
         'firstName': _firstNameController.text,
         'lastName': _lastNameController.text,
         'phone': _phoneController.text,
@@ -54,8 +54,19 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
         'roll': _rollController.text,
       });
 
+      // Update the local widget's data
+      setState(() {
+        widget.staffData?['firstName'] = _firstNameController.text;
+        widget.staffData?['lastName'] = _lastNameController.text;
+        widget.staffData?['phone'] = _phoneController.text;
+        widget.staffData?['address'] = _addressController.text;
+        widget.staffData?['age'] = int.tryParse(_ageController.text) ?? 0;
+        widget.staffData?['email'] = _emailController.text;
+        widget.staffData?['roll'] = _rollController.text;
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Амжилттай хадгалагдлаа.'),
+        content: Text('Амжилттай засагдлаа.'),
       ));
     } catch (e) {
       print('Error updating document: $e');
@@ -69,7 +80,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ажилчны мэдээлэл засах'),
+        title: Text('Ажилчдийн мэдээлэл засах'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -106,9 +117,24 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                 decoration: InputDecoration(labelText: 'Үүрэг'),
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _updateFirestoreData,
-                child: Text('Хадгалах'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _updateFirestoreData,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text('Хадгалах'),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

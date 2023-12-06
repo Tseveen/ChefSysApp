@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:chefsysproject/pages/staffdetailscreen.dart';
 
@@ -10,32 +11,33 @@ class StaffsScreen extends StatefulWidget {
 }
 
 class _StaffsScreenState extends State<StaffsScreen> {
-  void _showDeleteConfirmationDialog(String staffId) {
+  void _showDeleteConfirmationDialog(String staffId, String? userEmail) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Confirmation'),
-          content: Text('Are you sure you want to delete this staff member?'),
+          backgroundColor: Colors.lightBlue,
+          title: Text('Устгах'),
+          content: Text('Та энэ ажилтныг устгахдаа итгэлтэй байна уу?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text('Үгүй'),
             ),
             TextButton(
               onPressed: () {
-                if (isValidStaffId(staffId)) {
-                  print('Deleting staff with ID: $staffId');
-                  _deleteStaffMember(staffId);
+                if (isValidStaffId(staffId) && isValidUserEmail(userEmail)) {
+                  print('Deleting staff with ID: $staffId and user email: $userEmail');
+                  _deleteStaffMember(staffId, userEmail);
                 } else {
-                  // Handle the case where staffId is invalid
-                  print('Invalid staff ID: $staffId');
+                  // Handle the case where staffId or userEmail is invalid or null
+                  print('Invalid staff ID: $staffId or user email: $userEmail');
                 }
                 Navigator.of(context).pop();
               },
-              child: Text('Delete'),
+              child: Text('Устгах'),
             ),
           ],
         );
@@ -47,16 +49,30 @@ class _StaffsScreenState extends State<StaffsScreen> {
     return staffId.isNotEmpty;
   }
 
-  void _deleteStaffMember(String staffId) async {
+  bool isValidUserEmail(String? userEmail) {
+    return userEmail != null && userEmail.isNotEmpty;
+  }
+
+  void _deleteStaffMember(String staffId, String? userEmail) async {
     try {
-      print('Attempting to delete staff with ID: $staffId');
-      await FirebaseFirestore.instance
-          .collection('staffs')
-          .doc(staffId)
-          .delete();
-      print('Staff member deleted successfully.');
+      if (staffId != null) {
+        // Delete from Firestore
+        await FirebaseFirestore.instance.collection('staffs').doc(staffId).delete();
+        print('Firestore: Амжилттай устгалаа');
+      } else {
+        print('Firestore: Invalid staff ID: $staffId');
+      }
+
+      if (userEmail != null) {
+        // Delete Authentication user
+        User? firebaseUser = await FirebaseAuth.instance.currentUser;
+        await firebaseUser?.delete();
+        print('Authentication: Амжилттай устгалаа');
+      } else {
+        print('Authentication: Invalid user email: $userEmail');
+      }
     } catch (e) {
-      print('Error deleting staff member: $e');
+      print('Устгахад алдаа гарлаа: $e');
     }
   }
 
@@ -96,6 +112,7 @@ class _StaffsScreenState extends State<StaffsScreen> {
 
                 if (data != null) {
                   final String staffId = snapshot.data!.docs[index].id;
+                  final String? userEmail = data['email'];
 
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -117,13 +134,15 @@ class _StaffsScreenState extends State<StaffsScreen> {
                                   ),
                                 );
                               },
-                              icon: Icon(Icons.edit),
+                              icon: Icon(Icons.edit,
+                              color: Colors.blueAccent,),
                             ),
                             IconButton(
                               onPressed: () {
-                                _showDeleteConfirmationDialog(staffId);
+                                _showDeleteConfirmationDialog(staffId, userEmail);
                               },
-                              icon: Icon(Icons.delete),
+                              icon: Icon(Icons.delete,
+                              color: Colors.redAccent,),
                             ),
                           ],
                         ),

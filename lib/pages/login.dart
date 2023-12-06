@@ -49,12 +49,12 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 10), // Add vertical spacing
 
-              reusableTextField(context, "Цахим хаяг", Icons.person_2_outlined,
+              reusableTextField(context, "Цахим хаяг", Icons.email,
                   false, _emailTextController),
               const SizedBox(
                 height: 10.0,
               ),
-              reusableTextField(context, "Нууц үг", Icons.lock_outlined, true,
+              reusableTextField(context, "Нууц үг", Icons.password_outlined, true,
                   _passwordTextController),
 
               const SizedBox(
@@ -101,8 +101,8 @@ class _LoginState extends State<Login> {
                     .then((value) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Амжилттай нэвтэрлээ")));
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) =>  Home()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Home()));
                 }).onError((error, stackTrace) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Бүртгэлгүй хаяг байна")));
@@ -138,7 +138,9 @@ class _LoginState extends State<Login> {
             },
             child: Text(
               " Бүртгүүлэх",
-              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontWeight: FontWeight.bold),
             ),
           )
         ],

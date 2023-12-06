@@ -123,37 +123,38 @@ class _SignUpState extends State<SignUp> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  reusableTextField(context, 'Овог', Icons.email_outlined,
-                      false, _firstNameController),
+                  SizedBox(height: 10),
+                  reusableTextField(context, 'Овог', Icons.people, false,
+                      _firstNameController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Нэр', Icons.email_outlined, false,
-                      _lastNameController),
+                  reusableTextField(
+                      context, 'Нэр', Icons.people, false, _lastNameController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Нас', Icons.email_outlined, false,
+                  reusableTextField(context, 'Нас', Icons.people, false,
                       _ageController),
                   const SizedBox(
                     height: 20,
                   ),
                   reusableTextField(context, 'Утасны дугаар',
-                      Icons.email_outlined, false, _numberController),
+                      Icons.phone, false, _numberController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Хаяг', Icons.email_outlined,
+                  reusableTextField(context, 'Хаяг', Icons.home,
                       false, _addressController),
                   const SizedBox(
                     height: 20,
                   ),
                   reusableTextField(context, 'Ажлын үүрэг',
-                      Icons.email_outlined, false, _rollController),
+                      Icons.badge, false, _rollController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Цахим хаяг', Icons.email_outlined,
+                  reusableTextField(context, 'Цахим хаяг', Icons.email,
                       false, _emailTextController),
                   const SizedBox(
                     height: 20,
@@ -182,6 +183,7 @@ class _SignUpState extends State<SignUp> {
                     );
                     signUp();
                   }),
+                  SizedBox(height: 20,)
                 ],
               ),
             ),

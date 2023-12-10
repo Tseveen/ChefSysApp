@@ -1,4 +1,4 @@
-import 'package:chefsysproject/pages/menudetailscreen.dart';
+import 'package:chefsysproject/pages/menu/menudetailscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

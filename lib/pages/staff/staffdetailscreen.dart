@@ -91,30 +91,51 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
               TextField(
                 controller: _firstNameController,
                 decoration: InputDecoration(labelText: 'Овог'),
+                onChanged: (value) {
+                  _firstNameController.text = value;
+                },
               ),
               TextField(
                 controller: _lastNameController,
                 decoration: InputDecoration(labelText: 'Нэр'),
+                onChanged: (value) {
+                  _lastNameController.text = value;
+                },
               ),
               TextField(
                 controller: _phoneController,
                 decoration: InputDecoration(labelText: 'Утасны дугаар'),
+                onChanged: (value) {
+                  _phoneController.text = value;
+                },
               ),
               TextField(
                 controller: _addressController,
                 decoration: InputDecoration(labelText: 'Гэрийн хаяг'),
+                onChanged: (value) {
+                  _addressController.text = value;
+                },
               ),
               TextField(
                 controller: _ageController,
                 decoration: InputDecoration(labelText: 'Нас'),
+                onChanged: (value) {
+                  _ageController.text = value;
+                },
               ),
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Цахим хаяг'),
+                onChanged: (value) {
+                  _emailController.text = value;
+                },
               ),
               TextField(
                 controller: _rollController,
                 decoration: InputDecoration(labelText: 'Үүрэг'),
+                onChanged: (value) {
+                  _rollController.text = value;
+                },
               ),
               SizedBox(height: 16),
               Row(

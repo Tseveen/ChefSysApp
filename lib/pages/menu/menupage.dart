@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/menu/menuadd.dart';
 import 'package:chefsysproject/widgets/itemswidget.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,11 @@ class _MenuPageState extends State<MenuPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,MaterialPageRoute(builder: (context) => MenuAddScreen()),
+                          );
+                        },
                         child: Icon(
                           Icons.add,
                           color: Colors.black,
@@ -83,10 +88,10 @@ class _MenuPageState extends State<MenuPage> {
                   labelStyle: TextStyle(fontSize: 20),
                   labelPadding: EdgeInsets.symmetric(horizontal: 20),
                   tabs: [
-                    Tab(text: "Burger"),
-                    Tab(text: "Pasta"),
-                    Tab(text: "Sandwich"),
-                    Tab(text: "Cheese"),
+                    Tab(text: "1-р хоол"),
+                    Tab(text: "2-р хоол"),
+                    Tab(text: "Уух зүйлс"),
+                    Tab(text: "Салат"),
                   ],
                 ),
                 Expanded(

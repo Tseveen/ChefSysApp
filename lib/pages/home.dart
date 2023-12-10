@@ -1,6 +1,6 @@
-import 'package:chefsysproject/pages/menupage.dart';
-import 'package:chefsysproject/pages/staff.dart';
-import 'package:chefsysproject/pages/user_info.dart';
+import 'package:chefsysproject/pages/menu/menupage.dart';
+import 'package:chefsysproject/pages/staff/staff.dart';
+import 'package:chefsysproject/pages/userinfo/user_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

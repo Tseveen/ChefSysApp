@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/userinfo/edit_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,34 +13,43 @@ class UserInfoScreen extends StatefulWidget {
 }
 
 class _UserInfoScreenState extends State<UserInfoScreen> {
-  final CollectionReference<Map<String, dynamic>> dbRef =
-      FirebaseFirestore.instance.collection('staffs');
-  late User _user;
-  Map<String, dynamic> userData = {};
+  final user = FirebaseAuth.instance.currentUser!;
+  late String currentStaffFirstName = '';
+  late String currentStaffLastName = '';
+  late String currentStaffEmail = '';
+  late String currentStaffAddress = '';
+  late String currentStaffRole = '';
+  late String currentStaffPhone = '';
+  late String currentStaffAge = '';
 
   @override
   void initState() {
     super.initState();
-    _user = _auth.currentUser!;
-    print('User UID: ${_user.uid}');
-    fetchUserData();
+    fetchCurrentStaffData();
   }
 
-  Future<void> fetchUserData() async {
+  void fetchCurrentStaffData() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot =
-          await dbRef.doc(_user.uid).get();
+      final staffSnapshot = await FirebaseFirestore.instance
+          .collection('staffs')
+          .where('email', isEqualTo: user.email)
+          .get();
 
-      if (snapshot.exists) {
+      if (staffSnapshot.docs.isNotEmpty) {
+        final currentStaffData = staffSnapshot.docs.first.data();
+
         setState(() {
-          userData = snapshot.data()!;
+          currentStaffFirstName = currentStaffData['firstName'] ?? '';
+          currentStaffLastName = currentStaffData['lastName'] ?? '';
+          currentStaffAddress = currentStaffData['address'] ?? '';
+          currentStaffEmail = currentStaffData['email'] ?? '';
+          currentStaffRole = currentStaffData['roll'] ?? '';
+          currentStaffPhone = currentStaffData['phone'].toString() ?? '';
+          currentStaffAge = currentStaffData['age'].toString() ?? '';
         });
-        print('User Data: $userData');
-      } else {
-        print('No user data found.');
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      print('Error fetching current staff data: $e');
     }
   }
 
@@ -57,14 +67,29 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           Row(
             children: [
               IconButton(
-                icon: Icon(Icons.sunny),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                onPressed: () {},
-              ),
+  icon: Icon(
+    Icons.edit,
+    color: Theme.of(context).colorScheme.tertiary,
+  ),
+  onPressed: () {
+    // Navigate to the edit screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditUserInfoScreen(
+          currentStaffFirstName: currentStaffFirstName,
+          currentStaffLastName: currentStaffLastName,
+          currentStaffEmail: currentStaffEmail,
+          currentStaffAddress: currentStaffAddress,
+          currentStaffRole: currentStaffRole,
+          currentStaffPhone: currentStaffPhone,
+          currentStaffAge: currentStaffAge,
+        ),
+      ),
+    );
+  },
+),
+
               IconButton(
                 icon: Icon(Icons.exit_to_app),
                 style: ButtonStyle(
@@ -146,50 +171,50 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     itemProfile(
                       context,
                       'Овог',
-                      userData['lastName'] ?? '',
+                      currentStaffFirstName,
                       CupertinoIcons.person,
                     ),
                     const SizedBox(height: 10),
                     itemProfile(
                       context,
                       'Нэр',
-                      userData['firstName'] ?? '',
+                      currentStaffLastName,
                       CupertinoIcons.person,
                     ),
                     const SizedBox(height: 10),
                     itemProfile(
                       context,
-                      'Email',
-                      _user.email ?? '',
+                      'Цахим хаяг',
+                      currentStaffEmail,
                       CupertinoIcons.mail,
                     ),
                     const SizedBox(height: 10),
                     itemProfile(
                       context,
                       'Утас',
-                      userData['phone'] ?? '',
+                      currentStaffPhone.toString(),
                       CupertinoIcons.phone,
                     ),
                     const SizedBox(height: 10),
                     itemProfile(
                       context,
-                      'Хаяг',
-                      userData['address'] ?? '',
+                      'Гэрийн хаяг',
+                      currentStaffAddress,
                       CupertinoIcons.home,
                     ),
                     const SizedBox(height: 10),
                     itemProfile(
                       context,
                       'Ажлын үүрэг',
-                      userData['roll'] ?? '',
+                      currentStaffRole,
                       CupertinoIcons.bag,
                     ),
                     const SizedBox(height: 10),
                     itemProfile(
                       context,
                       'Нас',
-                      userData['age'] ?? '',
-                      CupertinoIcons.percent,
+                      currentStaffAge.toString(),
+                      CupertinoIcons.list_number,
                     ),
                   ],
                 ),
@@ -264,15 +289,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         title: Text(title),
         subtitle: Text(subtitle),
         leading: Icon(iconData),
-        trailing: IconButton(
-          icon: Icon(
-            Icons.edit,
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          onPressed: () {
-            print('Edit button pressed');
-          },
-        ),
       ),
     );
   }

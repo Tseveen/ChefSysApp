@@ -1,9 +1,12 @@
-import 'package:chefsysproject/pages/userinfo/edit_user.dart';
+import 'dart:io';
+import 'package:chefsysproject/pages/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chefsysproject/pages/login.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:chefsysproject/pages/userinfo/edit_user.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -21,11 +24,30 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   late String currentStaffRole = '';
   late String currentStaffPhone = '';
   late String currentStaffAge = '';
+  late String currentStaffProfilePictureUrl = '';
 
   @override
   void initState() {
     super.initState();
     fetchCurrentStaffData();
+    fetchProfilePicture();
+  }
+
+  void fetchProfilePicture() async {
+    try {
+      String userId = user.uid;
+      String profilePicturePath = 'user_images/$userId.jpg';
+
+      String downloadUrl = await FirebaseStorage.instance
+          .ref(profilePicturePath)
+          .getDownloadURL();
+
+      setState(() {
+        currentStaffProfilePictureUrl = downloadUrl;
+      });
+    } catch (e) {
+      print('Error fetching profile picture: $e');
+    }
   }
 
   void fetchCurrentStaffData() async {
@@ -53,6 +75,37 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     }
   }
 
+  void changeProfilePicture() async {
+    try {
+      final picker = ImagePicker();
+      XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+        String userId = user.uid;
+        String imagePath = 'user_images/$userId.jpg';
+
+        await FirebaseStorage.instance.ref(imagePath).putFile(File(pickedImage.path));
+
+        String downloadUrl = await FirebaseStorage.instance.ref(imagePath).getDownloadURL();
+
+        setState(() {
+          currentStaffProfilePictureUrl = downloadUrl;
+        });
+
+        // Update the profile picture URL in Firestore (Optional)
+        await FirebaseFirestore.instance
+            .collection('staffs')
+            .doc(user.uid)
+            .update({'profilePictureUrl': downloadUrl});
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Амжилтгүй")));
+      }
+    } catch (e) {
+      print('Error changing profile picture: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Амжилттай солилоо")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,29 +120,27 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           Row(
             children: [
               IconButton(
-  icon: Icon(
-    Icons.edit,
-    color: Theme.of(context).colorScheme.tertiary,
-  ),
-  onPressed: () {
-    // Navigate to the edit screen
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EditUserInfoScreen(
-          currentStaffFirstName: currentStaffFirstName,
-          currentStaffLastName: currentStaffLastName,
-          currentStaffEmail: currentStaffEmail,
-          currentStaffAddress: currentStaffAddress,
-          currentStaffRole: currentStaffRole,
-          currentStaffPhone: currentStaffPhone,
-          currentStaffAge: currentStaffAge,
-        ),
-      ),
-    );
-  },
-),
-
+                icon: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditUserInfoScreen(
+                        currentStaffFirstName: currentStaffFirstName,
+                        currentStaffLastName: currentStaffLastName,
+                        currentStaffEmail: currentStaffEmail,
+                        currentStaffAddress: currentStaffAddress,
+                        currentStaffRole: currentStaffRole,
+                        currentStaffPhone: currentStaffPhone,
+                        currentStaffAge: currentStaffAge,
+                      ),
+                    ),
+                  );
+                },
+              ),
               IconButton(
                 icon: Icon(Icons.exit_to_app),
                 style: ButtonStyle(
@@ -134,7 +185,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage("assets/logo.png"),
+                        image: currentStaffProfilePictureUrl.isNotEmpty
+                            ? NetworkImage(currentStaffProfilePictureUrl)
+                            : AssetImage("assets/logo.png") as ImageProvider,
                       ),
                     ),
                   ),
@@ -153,7 +206,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: changeProfilePicture,
                         icon: const Icon(Icons.add_a_photo),
                         color: Theme.of(context).colorScheme.tertiary,
                       ),
@@ -236,7 +289,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text(
                 'Үгүй',

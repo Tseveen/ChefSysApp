@@ -1,11 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
-import 'package:chefsysproject/reusables/reusables.dart';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:chefsysproject/reusables/reusables.dart';
 import 'package:chefsysproject/pages/login.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -18,10 +24,13 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _rollController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+
+  XFile? _image; // Variable to store the picked image file
 
   @override
   void dispose() {
@@ -41,27 +50,39 @@ class _SignUpState extends State<SignUp> {
     if (passwordConfirmed()) {
       try {
         // Create user
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailTextController.text.trim(),
           password: _passwordTextController.text.trim(),
         );
+
+        // Upload the image to Firebase Storage
+        if (_image != null) {
+          String userId = userCredential.user?.uid ?? '';
+          String imagePath = 'user_images/$userId.jpg';
+
+          // Upload the image
+          await FirebaseStorage.instance
+              .ref(imagePath)
+              .putFile(File(_image!.path));
+        }
 
         addUserDetails(
           _firstNameController.text.trim(),
           _lastNameController.text.trim(),
           _emailTextController.text.trim(),
-          int.parse(
-              _ageController.text.trim()), // Assuming 'age' is an integer field
-          int.parse(_numberController.text
-              .trim()), // Assuming 'phone' is an integer field
+          int.parse(_ageController.text.trim()),
+          int.parse(_numberController.text.trim()),
           _addressController.text.trim(),
           _rollController.text.trim(),
         );
 
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Шинэ хаяг үүслээ")));
+            .showSnackBar(SnackBar(content: Text("Шинэ хэрэглэгч үүслээ")));
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Login()));
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
       } catch (e) {
         // Handle errors during user creation
         print('Error during user creation: $e');
@@ -98,12 +119,21 @@ class _SignUpState extends State<SignUp> {
         _confirmpasswordTextController.text.trim();
   }
 
+  Future getImage() async {
+    final picker = ImagePicker();
+    _image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (_image != null) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text('Бүртгүүлэх'),
       ),
@@ -123,7 +153,33 @@ class _SignUpState extends State<SignUp> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: getImage,
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundColor: Colors.grey[200],
+                      backgroundImage:
+                          _image != null ? FileImage(File(_image!.path)) : null,
+                      child: _image == null
+                          ? Icon(
+                              Icons.camera_alt,
+                              size: 40,
+                              color: Colors.grey,
+                            )
+                          : null,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Display the picked image
+                  _image != null
+                      ? Image.file(
+                          File(_image!.path),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : SizedBox.shrink(),
+                  const SizedBox(height: 10),
                   reusableTextField(context, 'Овог', Icons.people, false,
                       _firstNameController),
                   const SizedBox(
@@ -134,28 +190,28 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Нас', Icons.people, false,
-                      _ageController),
+                  reusableTextField(
+                      context, 'Нас', Icons.people, false, _ageController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Утасны дугаар',
-                      Icons.phone, false, _numberController),
+                  reusableTextField(context, 'Утасны дугаар', Icons.phone,
+                      false, _numberController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Хаяг', Icons.home,
-                      false, _addressController),
+                  reusableTextField(
+                      context, 'Хаяг', Icons.home, false, _addressController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Ажлын үүрэг',
-                      Icons.badge, false, _rollController),
+                  reusableTextField(context, 'Ажлын үүрэг', Icons.badge, false,
+                      _rollController),
                   const SizedBox(
                     height: 20,
                   ),
-                  reusableTextField(context, 'Цахим хаяг', Icons.email,
-                      false, _emailTextController),
+                  reusableTextField(context, 'Цахим хаяг', Icons.email, false,
+                      _emailTextController),
                   const SizedBox(
                     height: 20,
                   ),
@@ -174,6 +230,10 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(
                     height: 20,
                   ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
                   button(context, ButtonType.SignUp, () {
                     showDialog(
                       context: context,
@@ -183,7 +243,9 @@ class _SignUpState extends State<SignUp> {
                     );
                     signUp();
                   }),
-                  SizedBox(height: 20,)
+                  SizedBox(
+                    height: 20,
+                  )
                 ],
               ),
             ),

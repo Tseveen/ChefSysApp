@@ -56,40 +56,36 @@ class _StaffsScreenState extends State<StaffsScreen> {
 
   void _deleteStaffMember(String staffId) async {
     try {
-      if (staffId != null) {
-        // Delete from Firestore
-        await FirebaseFirestore.instance
-            .collection('staffs')
-            .doc(staffId)
-            .delete();
-        print('Firestore: Амжилттай устгалаа');
+      // Delete from Firestore
+      await FirebaseFirestore.instance
+          .collection('staffs')
+          .doc(staffId)
+          .delete();
+      print('Firestore: Амжилттай устгалаа');
 
-        // Get the user email from Firestore
-        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-            .collection('staffs')
-            .doc(staffId)
-            .get();
-        String? userEmail = documentSnapshot.get('email');
+      // Get the user email from Firestore
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('staffs')
+          .doc(staffId)
+          .get();
+      String? userEmail = documentSnapshot.get('email');
 
-        // Delete Authentication user using the obtained email and a dummy password
-        if (userEmail != null) {
-          await FirebaseAuth.instance
-              .signInWithEmailAndPassword(
-            email: userEmail,
-            password: 'some_dummy_password', // Provide a dummy password
-          )
-              .then((userCredential) {
-            User? firebaseUser = userCredential.user;
-            return firebaseUser?.delete();
-          });
-          print('Authentication: Амжилттай устгалаа');
-        } else {
-          print('Firestore: User email is null for staff ID: $staffId');
-        }
+      // Delete Authentication user using the obtained email and a dummy password
+      if (userEmail != null) {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+          email: userEmail,
+          password: 'some_dummy_password', // Provide a dummy password
+        )
+            .then((userCredential) {
+          User? firebaseUser = userCredential.user;
+          return firebaseUser?.delete();
+        });
+        print('Authentication: Амжилттай устгалаа');
       } else {
-        print('Firestore: Invalid staff ID: $staffId');
+        print('Firestore: User email is null for staff ID: $staffId');
       }
-    } catch (e) {
+        } catch (e) {
       print('Устгахад алдаа гарлаа: $e');
     }
   }

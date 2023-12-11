@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:chefsysproject/pages/menu/menupage.dart';
 import 'package:chefsysproject/pages/staff/staff.dart';
 import 'package:chefsysproject/pages/userinfo/user_info.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class UIParameters {
   static const double cardBorderRadius = 30.0;
@@ -19,12 +20,31 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
   late String currentStaffLastName = '';
-  late String currentStaffRole = ''; // Add this line
+  late String currentStaffRole = '';
+  late String currentStaffProfilePictureUrl = '';
 
   @override
   void initState() {
     super.initState();
     fetchCurrentStaffData();
+    fetchProfilePicture();
+  }
+
+  void fetchProfilePicture() async {
+    try {
+      String userId = user.uid;
+      String profilePicturePath = 'user_images/$userId.jpg';
+
+      String downloadUrl = await FirebaseStorage.instance
+          .ref(profilePicturePath)
+          .getDownloadURL();
+
+      setState(() {
+        currentStaffProfilePictureUrl = downloadUrl;
+      });
+    } catch (e) {
+      print('Error fetching profile picture: $e');
+    }
   }
 
   void fetchCurrentStaffData() async {
@@ -38,7 +58,7 @@ class _HomeState extends State<Home> {
         final currentStaffData = staffSnapshot.docs.first.data();
         setState(() {
           currentStaffLastName = currentStaffData['lastName'] ?? '';
-          currentStaffRole = currentStaffData['roll'] ?? ''; // Fetch role
+          currentStaffRole = currentStaffData['roll'] ?? '';
         });
       }
     } catch (e) {
@@ -72,7 +92,6 @@ class _HomeState extends State<Home> {
                   ),
                   subtitle: Text(
                     'Ажлын зэрэг: $currentStaffRole',
-                    // Display the current staff's role
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.tertiary,
                         ),
@@ -82,12 +101,16 @@ class _HomeState extends State<Home> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UserInfoScreen()),
+                          builder: (context) => UserInfoScreen(),
+                        ),
                       );
                     },
                     child: CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage('assets/logo.png'),
+                      backgroundImage: currentStaffProfilePictureUrl.isNotEmpty
+                          ? NetworkImage(currentStaffProfilePictureUrl)
+                          : AssetImage("assets/logo.png")
+                              as ImageProvider<Object>,
                     ),
                   ),
                 ),

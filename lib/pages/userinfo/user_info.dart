@@ -44,8 +44,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           currentStaffAddress = currentStaffData['address'] ?? '';
           currentStaffEmail = currentStaffData['email'] ?? '';
           currentStaffRole = currentStaffData['roll'] ?? '';
-          currentStaffPhone = currentStaffData['phone'].toString() ?? '';
-          currentStaffAge = currentStaffData['age'].toString() ?? '';
+          currentStaffPhone = currentStaffData['phone'].toString();
+          currentStaffAge = currentStaffData['age'].toString();
         });
       }
     } catch (e) {

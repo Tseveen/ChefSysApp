@@ -29,8 +29,9 @@ class _StaffsScreenState extends State<StaffsScreen> {
             TextButton(
               onPressed: () {
                 if (isValidStaffId(staffId) && isValidUserEmail(userEmail)) {
-                  print('Deleting staff with ID: $staffId and user email: $userEmail');
-                  _deleteStaffMember(staffId, userEmail);
+                  print(
+                      'Deleting staff with ID: $staffId and user email: $userEmail');
+                  _deleteStaffMember(staffId);
                 } else {
                   // Handle the case where staffId or userEmail is invalid or null
                   print('Invalid staff ID: $staffId or user email: $userEmail');
@@ -53,23 +54,40 @@ class _StaffsScreenState extends State<StaffsScreen> {
     return userEmail != null && userEmail.isNotEmpty;
   }
 
-  void _deleteStaffMember(String staffId, String? userEmail) async {
+  void _deleteStaffMember(String staffId) async {
     try {
       if (staffId != null) {
         // Delete from Firestore
-        await FirebaseFirestore.instance.collection('staffs').doc(staffId).delete();
+        await FirebaseFirestore.instance
+            .collection('staffs')
+            .doc(staffId)
+            .delete();
         print('Firestore: Амжилттай устгалаа');
+
+        // Get the user email from Firestore
+        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+            .collection('staffs')
+            .doc(staffId)
+            .get();
+        String? userEmail = documentSnapshot.get('email');
+
+        // Delete Authentication user using the obtained email and a dummy password
+        if (userEmail != null) {
+          await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+            email: userEmail,
+            password: 'some_dummy_password', // Provide a dummy password
+          )
+              .then((userCredential) {
+            User? firebaseUser = userCredential.user;
+            return firebaseUser?.delete();
+          });
+          print('Authentication: Амжилттай устгалаа');
+        } else {
+          print('Firestore: User email is null for staff ID: $staffId');
+        }
       } else {
         print('Firestore: Invalid staff ID: $staffId');
-      }
-
-      if (userEmail != null) {
-        // Delete Authentication user
-        User? firebaseUser = await FirebaseAuth.instance.currentUser;
-        await firebaseUser?.delete();
-        print('Authentication: Амжилттай устгалаа');
-      } else {
-        print('Authentication: Invalid user email: $userEmail');
       }
     } catch (e) {
       print('Устгахад алдаа гарлаа: $e');
@@ -134,15 +152,20 @@ class _StaffsScreenState extends State<StaffsScreen> {
                                   ),
                                 );
                               },
-                              icon: Icon(Icons.edit,
-                              color: Colors.blueAccent,),
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.blueAccent,
+                              ),
                             ),
                             IconButton(
                               onPressed: () {
-                                _showDeleteConfirmationDialog(staffId, userEmail);
+                                _showDeleteConfirmationDialog(
+                                    staffId, userEmail);
                               },
-                              icon: Icon(Icons.delete,
-                              color: Colors.redAccent,),
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.redAccent,
+                              ),
                             ),
                           ],
                         ),

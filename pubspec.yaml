@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,7 +42,19 @@ dependencies:
   firebase_storage: ^11.5.3
   fluttertoast: ^8.2.4
   firebase_database: ^10.3.6
-  
+  firebase_admin: ^0.2.0
+  image_picker: ^1.0.4
+  animated_splash_screen:
+  flutter_launcher_icons: ^0.11.0
+  flutter_app_name: ^0.1.1
+
+flutter_app_name:
+  name: "ChefSys"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
 
 dev_dependencies:
   flutter_test:

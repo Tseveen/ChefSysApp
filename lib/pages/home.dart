@@ -1,3 +1,4 @@
+import 'package:chefsysproject/pages/chatscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -160,9 +161,9 @@ class _HomeState extends State<Home> {
                   ),
                   _buildAnimatedContainer(
                     context,
-                    'Нийлүүлэгч',
-                    'assets/van.png',
-                    Home(),
+                    'Чатлах',
+                    'assets/speak.png',
+                    ChatScreen(),
                   ),
                   _buildAnimatedContainer(
                     context,
